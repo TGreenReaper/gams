@@ -1,0 +1,40 @@
+<h1 id="target">Wowsers</h1>
+<script>
+  var url = "https://ai.thegreenreaper.net/";
+
+  var url = "https://ai.thegreenreaper.net/";
+
+fetch(url)
+  .then(response => {
+    console.log('Response status:', response.status);
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+    return response.text();
+  })
+  .then(html => {
+    console.log('Fetched HTML:', html);
+    const parser = new DOMParser();
+    const parsedDoc = parser.parseFromString(html, "text/html");
+    const statusElement = parsedDoc.getElementById("status");
+    const targetElement = document.getElementById("target");
+
+    console.log('Parsed Document:', parsedDoc);
+
+    if (statusElement && targetElement) {
+      console.log('Status element found:', statusElement.innerHTML);
+      targetElement.innerHTML = statusElement.innerHTML;
+    } else {
+      if (!statusElement) console.error("Status element not found in fetched HTML");
+      if (!targetElement) console.error("Target element not found in the current document");
+    }
+  })
+  .catch(error => {
+    if (error.name === 'TypeError') {
+      console.error('There was a problem with the fetch operation:', error.message);
+    } else {
+      console.error('Unexpected error:', error.message);
+    }
+  });
+
+</script>
